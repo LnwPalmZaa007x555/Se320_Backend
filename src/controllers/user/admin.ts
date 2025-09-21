@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { supabase } from "../supabaseClient";
-import { newAdminSchema, updateAdminSchema } from "../schemas/admin.schema";
-import type { Admin, NewAdmin, UpdateAdmin } from "../types/admin";
+import { supabase } from "../../supabaseClient";
+import { newAdminSchema, updateAdminSchema } from "../../schemas/user/admin.schema";
+import type { Admin, NewAdmin, UpdateAdmin } from "../../types/user/admin";
 
 // GET /api/admin
 export async function getAdmins(_req: Request, res: Response) {
@@ -38,7 +38,7 @@ export async function getAdminsWithStaff(_req: Request, res: Response) {
 }
 
 
-// GET /api/admin/:id
+// GET /api/admin/:id  ยังไม่ทำ แล้วก้อไปทำ doctor ต่อ
 export async function getAdminById(req: Request, res: Response) {
   const id = Number(req.params.id);
   if (!Number.isFinite(id)) {

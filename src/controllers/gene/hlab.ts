@@ -1,16 +1,17 @@
 import { Request, Response } from "express";
-import { supabase } from "../supabaseClient";
-import { CYP2C9, NewCYP2C9, UpdateCYP2C9 } from "../types/cyp2c9";
-import { newCYP2C9Schema, updateCYP2C9Schema } from "../schemas/cyp2c9.schema";
+import { supabase } from "../../supabaseClient";
+import { HLAB, NewHLAB, UpdateHLAB } from "../../types/gene/hlab";
+import { newHLABSchema, updateHLABSchema } from "../../schemas/gene/hlab.schema";
 
-// GET /api/cyp2c9
-export async function getCYP2C9(_req: Request, res: Response) {
+// GET /api/hlab
+export async function getHLAB(_req: Request, res: Response) {
   try {
     const { data, error } = await supabase
-      .from("CYP2C9")
+      .from("HLA_B")
       .select("*")
       .limit(100)
-      .returns<CYP2C9[]>();
+      .returns<HLAB[]>();
+
     if (error) return res.status(500).json({ error: error.message });
     return res.json(data);
   } catch (e: any) {
@@ -18,19 +19,21 @@ export async function getCYP2C9(_req: Request, res: Response) {
   }
 }
 
-// GET /api/cyp2c9/:id
-export async function getCYP2C9ById(req: Request, res: Response) {
+// GET /api/hlab/:id
+export async function getHLABById(req: Request, res: Response) {
   const idNum = Number(req.params.id);
   if (!Number.isFinite(idNum)) {
-    return res.status(400).json({ error: "Invalid CYP2C9_Id (must be a number)" });
+    return res.status(400).json({ error: "Invalid HLA_B_Id (must be a number)" });
   }
+
   try {
     const { data, error } = await supabase
-      .from("CYP2C9")
+      .from("HLA_B")
       .select("*")
-      .eq("CYP2C9_Id", idNum)
+      .eq("HLA_B_Id", idNum)
       .single()
-      .returns<CYP2C9>();
+      .returns<HLAB>();
+
     if (error) return res.status(404).json({ error: error.message });
     return res.json(data);
   } catch (e: any) {
@@ -38,16 +41,17 @@ export async function getCYP2C9ById(req: Request, res: Response) {
   }
 }
 
-// POST /api/cyp2c9
-export async function createCYP2C9(req: Request, res: Response) {
+// POST /api/hlab
+export async function createHLAB(req: Request, res: Response) {
   try {
-    const payload = newCYP2C9Schema.parse(req.body) as NewCYP2C9;
+    const payload = newHLABSchema.parse(req.body) as NewHLAB;
     const { data, error } = await supabase
-      .from("CYP2C9")
+      .from("HLA_B")
       .insert(payload)
       .select("*")
       .single()
-      .returns<CYP2C9>();
+      .returns<HLAB>();
+
     if (error) return res.status(400).json({ error: error.message });
     return res.status(201).json(data);
   } catch (e: any) {
@@ -56,21 +60,23 @@ export async function createCYP2C9(req: Request, res: Response) {
   }
 }
 
-// PUT /api/cyp2c9/:id
-export async function updateCYP2C9ById(req: Request, res: Response) {
+// PUT /api/hlab/:id
+export async function updateHLABById(req: Request, res: Response) {
   const idNum = Number(req.params.id);
   if (!Number.isFinite(idNum)) {
-    return res.status(400).json({ error: "Invalid CYP2C9_Id (must be a number)" });
+    return res.status(400).json({ error: "Invalid HLA_B_Id (must be a number)" });
   }
+
   try {
-    const patch = updateCYP2C9Schema.parse(req.body) as UpdateCYP2C9;
+    const patch = updateHLABSchema.parse(req.body) as UpdateHLAB;
     const { data, error } = await supabase
-      .from("CYP2C9")
+      .from("HLA_B")
       .update(patch)
-      .eq("CYP2C9_Id", idNum)
+      .eq("HLA_B_Id", idNum)
       .select("*")
       .single()
-      .returns<CYP2C9>();
+      .returns<HLAB>();
+
     if (error) return res.status(400).json({ error: error.message });
     return res.status(200).json(data);
   } catch (e: any) {
@@ -79,16 +85,18 @@ export async function updateCYP2C9ById(req: Request, res: Response) {
   }
 }
 
-// DELETE /api/cyp2c9/:id
-export async function deleteCYP2C9ById(req: Request, res: Response) {
+// DELETE /api/hlab/:id
+export async function deleteHLABById(req: Request, res: Response) {
   const idNum = Number(req.params.id);
   if (!Number.isFinite(idNum)) {
-    return res.status(400).json({ error: "Invalid CYP2C9_Id (must be a number)" });
+    return res.status(400).json({ error: "Invalid HLA_B_Id (must be a number)" });
   }
+
   try {
-    const { error } = await supabase.from("CYP2C9").delete().eq("CYP2C9_Id", idNum);
+    const { error } = await supabase.from("HLA_B").delete().eq("HLA_B_Id", idNum);
     if (error) return res.status(500).json({ error: error.message });
-    return res.json({ ok: true, message: `CYP2C9 ${idNum} deleted` });
+
+    return res.json({ ok: true, message: `HLA_B ${idNum} deleted` });
   } catch (e: any) {
     return res.status(500).json({ error: String(e?.message || e) });
   }

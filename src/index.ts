@@ -1,18 +1,18 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import patientsRoutes from "./routes/patients";
-import staffRoutes from "./routes/staff";
-import adminRoutes from "./routes/admin";
-import doctorRoutes from "./routes/doctor";
+import patientsRoutes from "./routes/user/patients";
+import staffRoutes from "./routes/user/staff";
+import adminRoutes from "./routes/user/admin";
+import doctorRoutes from "./routes/user/doctor";
 
 
-import vkorc1Routes from "./routes/vkorc1";
-import cyp3a5Routes from "./routes/cyp3a5";
-import tpmtRoutes from "./routes/tpmt";
-import cyp2c9Routes from "./routes/cyp2c9";
-import hlabRoutes from "./routes/hlab";
-import cyp2d6Routes from "./routes/cyp2d6";
+import vkorc1Routes from "./routes/gene/vkorc1";
+import cyp3a5Routes from "./routes/gene/cyp3a5";
+import tpmtRoutes from "./routes/gene/tpmt";
+import cyp2c9Routes from "./schemas/gene/cyp2c9";
+import hlabRoutes from "./routes/gene/hlab";
+import cyp2d6Routes from "./routes/gene/cyp2d6";
 
 
 const app = express();

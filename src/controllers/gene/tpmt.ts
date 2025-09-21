@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { supabase } from "../supabaseClient";
-import { TPMT, NewTPMT, UpdateTPMT } from "../types/tpmt";
-import { newTPMTSchema, updateTPMTSchema } from "../schemas/tpmt.schema";
+import { supabase } from "../../supabaseClient";
+import { NewTPMT, TPMT, UpdateTPMT } from "../../types/gene/tpmt";
+import { newTPMTSchema, updateTPMTSchema } from "../../schemas/gene/tpmt.schema";
 
 // GET /api/tpmt
 export async function getTPMT(_req: Request, res: Response) {

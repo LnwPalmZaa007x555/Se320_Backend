@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
-import { supabase } from "../supabaseClient";
-import { newStaffSchema, updateStaffSchema } from "../schemas/staff.schema";
-import type { StaffPublic } from "../types/staff";
+import { supabase } from "../../supabaseClient";
+import { newStaffSchema, updateStaffSchema } from "../../schemas/user/staff.schema";
+import type { StaffPublic } from "../../types/user/staff";
 
 const PUBLIC_COLUMNS = "Staff_Id, Fname, Lname, Role, email"; // ไม่คืน password
 

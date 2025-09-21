@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {getAdmins,getAdminsWithStaff,getAdminById,createAdmin,updateAdminById,deleteAdminById,}
-from "../controllers/admin";
+from "../../controllers/user/admin";
 
 const router = Router();
 

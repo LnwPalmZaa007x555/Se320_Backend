@@ -1,6 +1,6 @@
 import { Router } from "express";
-import {getHLAB,getHLABById,createHLAB,updateHLABById,deleteHLABById,}
-from "../controllers/hlab";
+import { createHLAB, deleteHLABById, getHLAB, getHLABById, updateHLABById } from "../../controllers/gene/hlab";
+
 
 const router = Router();
 

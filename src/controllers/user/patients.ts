@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { supabase } from "../supabaseClient";
-import { Patient, NewPatient, UpdatePatient } from "../types/patients";
-import { newPatientSchema, updatePatientSchema } from "../schemas/patients.schema";
+import { supabase } from "../../supabaseClient";
+import { Patient, NewPatient, UpdatePatient } from "../../types/user/patients";
+import { newPatientSchema, updatePatientSchema } from "../../schemas/user/patients.schema";
 
 
 

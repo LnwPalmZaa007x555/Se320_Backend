@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { supabase } from "../supabaseClient";
-import { newDoctorSchema, updateDoctorSchema } from "../schemas/doctor.schema";
-import type { Doctor, NewDoctor, UpdateDoctor } from "../types/doctor";
+import { supabase } from "../../supabaseClient";
+import { newDoctorSchema, updateDoctorSchema } from "../../schemas/user/doctor.schema";
+import type { Doctor, NewDoctor, UpdateDoctor } from "../../types/user/doctor";
 
 // GET /api/doctor
 export async function getDoctors(_req: Request, res: Response) {

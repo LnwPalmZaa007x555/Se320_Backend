@@ -1,17 +1,16 @@
 import { Request, Response } from "express";
-import { supabase } from "../supabaseClient";
-import { CYP2D6, NewCYP2D6, UpdateCYP2D6 } from "../types/cyp2d6";
-import { newCYP2D6Schema, updateCYP2D6Schema } from "../schemas/cyp2d6.schema";
+import { supabase } from "../../supabaseClient";
+import { NewVKORC1, UpdateVKORC1, VKORC1 } from "../../types/gene/vkorc1";
+import { newVKORC1Schema, updateVKORC1Schema } from "../../schemas/gene/vkorc1.schema";
 
-// GET /api/cyp2d6
-export async function getCYP2D6(_req: Request, res: Response) {
+// GET /api/vkorc1
+export async function getVKORC1(_req: Request, res: Response) {
   try {
     const { data, error } = await supabase
-      .from("CYP2D6")
+      .from("VKORC1")
       .select("*")
       .limit(100)
-      .returns<CYP2D6[]>();
-
+      .returns<VKORC1[]>();
     if (error) return res.status(500).json({ error: error.message });
     return res.json(data);
   } catch (e: any) {
@@ -19,20 +18,19 @@ export async function getCYP2D6(_req: Request, res: Response) {
   }
 }
 
-// GET /api/cyp2d6/:id
-export async function getCYP2D6ById(req: Request, res: Response) {
+// GET /api/vkorc1/:id
+export async function getVKORC1ById(req: Request, res: Response) {
   const idNum = Number(req.params.id);
   if (!Number.isFinite(idNum)) {
-    return res.status(400).json({ error: "Invalid 2D6_Id (must be a number)" });
+    return res.status(400).json({ error: "Invalid VKORC1_Id (must be a number)" });
   }
   try {
     const { data, error } = await supabase
-      .from("CYP2D6")
+      .from("VKORC1")
       .select("*")
-      .eq("2D6_Id", idNum)   // 👈 ใช้ชื่อคอลัมน์เป็นสตริง
+      .eq("VKORC1_Id", idNum)
       .single()
-      .returns<CYP2D6>();
-
+      .returns<VKORC1>();
     if (error) return res.status(404).json({ error: error.message });
     return res.json(data);
   } catch (e: any) {
@@ -40,60 +38,64 @@ export async function getCYP2D6ById(req: Request, res: Response) {
   }
 }
 
-// POST /api/cyp2d6
-export async function createCYP2D6(req: Request, res: Response) {
+// POST /api/vkorc1
+export async function createVKORC1(req: Request, res: Response) {
   try {
-    const payload = newCYP2D6Schema.parse(req.body) as NewCYP2D6;
+    const payload = newVKORC1Schema.parse(req.body) as NewVKORC1;
     const { data, error } = await supabase
-      .from("CYP2D6")
+      .from("VKORC1")
       .insert(payload)
       .select("*")
       .single()
-      .returns<CYP2D6>();
+      .returns<VKORC1>();
     if (error) return res.status(400).json({ error: error.message });
     return res.status(201).json(data);
   } catch (e: any) {
-    if (e?.name === "ZodError") return res.status(400).json({ error: e.flatten() });
+    if (e?.name === "ZodError") {
+      return res.status(400).json({ error: e.flatten() });
+    }
     return res.status(500).json({ error: String(e?.message || e) });
   }
 }
 
-// PUT /api/cyp2d6/:id
-export async function updateCYP2D6ById(req: Request, res: Response) {
+// PUT /api/vkorc1/:id
+export async function updateVKORC1ById(req: Request, res: Response) {
   const idNum = Number(req.params.id);
   if (!Number.isFinite(idNum)) {
-    return res.status(400).json({ error: "Invalid 2D6_Id (must be a number)" });
+    return res.status(400).json({ error: "Invalid VKORC1_Id (must be a number)" });
   }
   try {
-    const patch = updateCYP2D6Schema.parse(req.body) as UpdateCYP2D6;
+    const patch = updateVKORC1Schema.parse(req.body) as UpdateVKORC1;
     const { data, error } = await supabase
-      .from("CYP2D6")
+      .from("VKORC1")
       .update(patch)
-      .eq("2D6_Id", idNum)
+      .eq("VKORC1_Id", idNum)
       .select("*")
       .single()
-      .returns<CYP2D6>();
+      .returns<VKORC1>();
     if (error) return res.status(400).json({ error: error.message });
     return res.status(200).json(data);
   } catch (e: any) {
-    if (e?.name === "ZodError") return res.status(400).json({ error: e.flatten() });
+    if (e?.name === "ZodError") {
+      return res.status(400).json({ error: e.flatten() });
+    }
     return res.status(500).json({ error: String(e?.message || e) });
   }
 }
 
-// DELETE /api/cyp2d6/:id
-export async function deleteCYP2D6ById(req: Request, res: Response) {
+// DELETE /api/vkorc1/:id
+export async function deleteVKORC1ById(req: Request, res: Response) {
   const idNum = Number(req.params.id);
   if (!Number.isFinite(idNum)) {
-    return res.status(400).json({ error: "Invalid 2D6_Id (must be a number)" });
+    return res.status(400).json({ error: "Invalid VKORC1_Id (must be a number)" });
   }
   try {
     const { error } = await supabase
-      .from("CYP2D6")
+      .from("VKORC1")
       .delete()
-      .eq("2D6_Id", idNum);
+      .eq("VKORC1_Id", idNum);
     if (error) return res.status(500).json({ error: error.message });
-    return res.json({ ok: true, message: `CYP2D6 ${idNum} deleted` });
+    return res.json({ ok: true, message: `VKORC1 ${idNum} deleted` });
   } catch (e: any) {
     return res.status(500).json({ error: String(e?.message || e) });
   }

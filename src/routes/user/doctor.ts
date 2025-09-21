@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {getDoctors,getDoctorById,createDoctor,updateDoctorById,deleteDoctorById,getDoctorsWithStaff,}
-from "../controllers/doctor";
+from "../../controllers/user/doctor";
 
 const router = Router();
 
