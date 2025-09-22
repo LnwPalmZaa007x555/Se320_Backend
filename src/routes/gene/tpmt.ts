@@ -1,6 +1,6 @@
 import { Router } from "express";
-import {getTPMT,getTPMTById,createTPMT,updateTPMTById,deleteTPMTById,}
-from "../controllers/tpmt";
+import { createTPMT, deleteTPMTById, getTPMT, getTPMTById, updateTPMTById } from "../../controllers/gene/tpmt";
+
 
 const router = Router();
 

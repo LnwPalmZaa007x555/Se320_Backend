@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {getStaff,getStaffById,createStaff,updateStaffById,deleteStaffById,}
-from "../controllers/staff";
+from "../../controllers/user/staff";
 
 const router = Router();
 

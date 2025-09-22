@@ -1,6 +1,6 @@
 import { Router } from "express";
-import {getCYP2C9,getCYP2C9ById,createCYP2C9,updateCYP2C9ById,deleteCYP2C9ById,}
-from "../controllers/cyp2c9";
+import { createCYP2C9, deleteCYP2C9ById, getCYP2C9, getCYP2C9ById, updateCYP2C9ById } from "../../controllers/gene/cyp2c9";
+
 
 const router = Router();
 

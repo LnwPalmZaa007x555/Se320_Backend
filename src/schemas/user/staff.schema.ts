@@ -6,6 +6,7 @@ export const newStaffSchema = z.object({
   Role: z.string().min(1).trim(),
   email: z.string().email().toLowerCase().trim(),
   password: z.string().min(8, "Password must be at least 8 characters"),
+  Hospital_Name: z.string().min(1).trim(), // 👈 เพิ่ม
 }).strict();
 
 export const updateStaffSchema = z.object({
@@ -14,6 +15,7 @@ export const updateStaffSchema = z.object({
   Role: z.string().min(1).trim().optional(),
   email: z.string().email().toLowerCase().trim().optional(),
   password: z.string().min(8).optional(),
+  Hospital_Name: z.string().min(1).trim().optional(), // 👈 เพิ่ม
 }).strict();
 
 export type NewStaffInput = z.infer<typeof newStaffSchema>;

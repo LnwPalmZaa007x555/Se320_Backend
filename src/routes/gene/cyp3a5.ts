@@ -1,6 +1,6 @@
 import { Router } from "express";
-import {getCYP3A5,getCYP3A5ById,createCYP3A5,updateCYP3A5ById,deleteCYP3A5ById,} 
-from "../controllers/cyp3a5";
+import { createCYP3A5, deleteCYP3A5ById, getCYP3A5, getCYP3A5ById, updateCYP3A5ById } from "../../controllers/gene/cyp3a5";
+
 
 const router = Router();
 

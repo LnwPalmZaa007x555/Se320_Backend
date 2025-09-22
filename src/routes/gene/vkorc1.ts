@@ -1,6 +1,6 @@
 import { Router } from "express";
-import {getVKORC1,getVKORC1ById,createVKORC1,updateVKORC1ById,deleteVKORC1ById,} 
-from "../controllers/vkorc1";
+import { createVKORC1, deleteVKORC1ById, getVKORC1, getVKORC1ById, updateVKORC1ById } from "../../controllers/gene/vkorc1";
+
 
 const router = Router();
 

@@ -1,9 +1,22 @@
 import { Request, Response } from "express";
-import { supabase } from "../supabaseClient";
-import { newDoctorSchema, updateDoctorSchema } from "../schemas/doctor.schema";
-import type { Doctor, NewDoctor, UpdateDoctor } from "../types/doctor";
+import { supabase } from "../../supabaseClient";
+import { newDoctorSchema, updateDoctorSchema } from "../../schemas/user/doctor.schema";
+import type { Doctor, NewDoctor, UpdateDoctor, DoctorWithStaff } from "../../types/user/doctor";
 
-// GET /api/doctor
+// 👇 แก้ให้ตรงชื่อ FK จริง ถ้าไม่ใช่ชื่อนี้
+const FK_NAME = "doctor_staff_fk";
+
+// util: normalize กรณี PostgREST ส่ง Staff เป็น array
+function pickSingleStaff(row: any) {
+  if (!row) return row;
+  const staff = Array.isArray(row.Staff) ? (row.Staff[0] ?? null) : (row.Staff ?? null);
+  return { ...row, Staff: staff };
+}
+
+/**
+ * GET /api/doctor
+ * รายการ Doctor (ไม่ join Staff)
+ */
 export async function getDoctors(_req: Request, res: Response) {
   try {
     const { data, error } = await supabase
@@ -19,7 +32,10 @@ export async function getDoctors(_req: Request, res: Response) {
   }
 }
 
-// (ทางเลือก) GET /api/doctor/with-staff  — รวมข้อมูล Staff ด้วย
+/**
+ * GET /api/doctor/with-staff
+ * รายการ Doctor พร้อมข้อมูล Staff (Fname, Lname, email, Role)
+ */
 export async function getDoctorsWithStaff(_req: Request, res: Response) {
   try {
     const { data, error } = await supabase
@@ -27,17 +43,28 @@ export async function getDoctorsWithStaff(_req: Request, res: Response) {
       .select(`
         Doctor_id,
         Staff_Id,
-        Staff:Staff_Id ( Staff_Id, Fname, Lname, email, Role )
+        Staff:${FK_NAME} (
+          Staff_Id,
+          Fname,
+          Lname,
+          email,
+          Role
+        )
       `);
 
     if (error) return res.status(500).json({ error: error.message });
-    return res.json(data);
+
+    const normalized = (data ?? []).map(pickSingleStaff);
+    return res.json(normalized as DoctorWithStaff[]);
   } catch (e: any) {
     return res.status(500).json({ error: String(e?.message || e) });
   }
 }
 
-// GET /api/doctor/:id
+/**
+ * GET /api/doctor/:id
+ * Doctor แถวเดียว พร้อมข้อมูล Staff
+ */
 export async function getDoctorById(req: Request, res: Response) {
   const id = Number(req.params.id);
   if (!Number.isFinite(id)) {
@@ -47,28 +74,36 @@ export async function getDoctorById(req: Request, res: Response) {
   try {
     const { data, error } = await supabase
       .from("Doctor")
-      .select("*")
+      .select(`
+        Doctor_id,
+        Staff_Id,
+        Staff:${FK_NAME} (
+          Staff_Id,
+          Fname,
+          Lname,
+          email,
+          Role
+        )
+      `)
       .eq("Doctor_id", id)
-      .single()
-      .returns<Doctor>();
+      .maybeSingle();
 
-    if (error) return res.status(404).json({ error: error.message });
-    return res.json(data);
+    if (error) return res.status(500).json({ error: error.message });
+    if (!data)  return res.status(404).json({ error: "Doctor not found" });
+
+    return res.json(pickSingleStaff(data) as DoctorWithStaff);
   } catch (e: any) {
     return res.status(500).json({ error: String(e?.message || e) });
   }
 }
 
-// POST /api/doctor
+/**
+ * POST /api/doctor
+ * เพิ่มแถวใหม่ (โดยปกติไม่จำเป็นถ้ามี trigger จาก Staff อยู่แล้ว—แต่เปิดไว้ตามที่ขอ)
+ */
 export async function createDoctor(req: Request, res: Response) {
   try {
     const payload = newDoctorSchema.parse(req.body) as NewDoctor;
-
-    // (ทางเลือก) ตรวจว่า Staff_Id มีอยู่จริง
-    // const { data: staff, error: staffErr } = await supabase
-    //   .from("Staff").select("Staff_Id").eq("Staff_Id", payload.Staff_Id).maybeSingle();
-    // if (staffErr) return res.status(500).json({ error: staffErr.message });
-    // if (!staff)  return res.status(400).json({ error: "Staff_Id not found" });
 
     const { data, error } = await supabase
       .from("Doctor")
@@ -85,7 +120,10 @@ export async function createDoctor(req: Request, res: Response) {
   }
 }
 
-// PUT /api/doctor/:id
+/**
+ * PUT /api/doctor/:id
+ * แก้ไขแถว (ส่วนใหญ่จะไม่ค่อยได้ใช้ หากใช้ trigger จาก Staff)
+ */
 export async function updateDoctorById(req: Request, res: Response) {
   const id = Number(req.params.id);
   if (!Number.isFinite(id)) {
@@ -111,7 +149,10 @@ export async function updateDoctorById(req: Request, res: Response) {
   }
 }
 
-// DELETE /api/doctor/:id
+/**
+ * DELETE /api/doctor/:id
+ * ลบแถว (ถ้าลบ Staff พร้อม cascade อยู่แล้วอาจไม่ต้องเรียก endpoint นี้)
+ */
 export async function deleteDoctorById(req: Request, res: Response) {
   const id = Number(req.params.id);
   if (!Number.isFinite(id)) {
