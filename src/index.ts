@@ -6,7 +6,7 @@ import staffRoutes from "./routes/user/staff";
 import adminRoutes from "./routes/user/admin";
 import doctorRoutes from "./routes/user/doctor";
 import medtechRoutes from "./routes/user/medtech";
-
+import pharmacistRoutes from "./routes/user/pharmacist";
 
 import vkorc1Routes from "./routes/gene/vkorc1";
 import cyp3a5Routes from "./routes/gene/cyp3a5";
@@ -28,6 +28,7 @@ app.use("/api/staff", staffRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/doctor", doctorRoutes);
 app.use("/api/medtech", medtechRoutes);
+app.use("/api/phamacist", pharmacistRoutes);
 
 // ../gene
 app.use("/api/vkorc1", vkorc1Routes);
