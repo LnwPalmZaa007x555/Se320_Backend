@@ -4,7 +4,8 @@ export interface Staff {
   Lname: string;
   Role: string;
   email: string;
-  password: string; // เก็บแบบ hash ใน DB
+  password: string;      // เก็บแบบ hash ใน DB
+  Hospital_Name: string; // 👈 เพิ่ม
 }
 
 // ใช้เวลา insert (ไม่ต้องมี Staff_Id)

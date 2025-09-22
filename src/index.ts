@@ -5,6 +5,7 @@ import patientsRoutes from "./routes/user/patients";
 import staffRoutes from "./routes/user/staff";
 import adminRoutes from "./routes/user/admin";
 import doctorRoutes from "./routes/user/doctor";
+import medtechRoutes from "./routes/user/medtech";
 
 
 import vkorc1Routes from "./routes/gene/vkorc1";
@@ -21,13 +22,14 @@ const PORT = process.env.PORT || 4000;
 app.use(cors({ origin: process.env.ALLOW_ORIGIN || "http://localhost:3000" }));
 app.use(express.json());
 
-// ใช้ routes
+// ../user
 app.use("/api/patients", patientsRoutes);
 app.use("/api/staff", staffRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/doctor", doctorRoutes);
+app.use("/api/medtech", medtechRoutes);
 
-
+// ../gene
 app.use("/api/vkorc1", vkorc1Routes);
 app.use("/api/cyp3a5", cyp3a5Routes);
 app.use("/api/tpmt", tpmtRoutes);
