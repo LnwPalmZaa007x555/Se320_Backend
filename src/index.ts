@@ -15,6 +15,11 @@ import cyp2c9Routes from "./schemas/gene/cyp2c9";
 import hlabRoutes from "./routes/gene/hlab";
 import cyp2d6Routes from "./routes/gene/cyp2d6";
 
+//auth
+import authRoutes from "./routes/auth";
+import { auth } from "./middlewares/auth";
+import { requireRole } from "./middlewares/requireRole";
+
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -37,6 +42,9 @@ app.use("/api/tpmt", tpmtRoutes);
 app.use("/api/cyp2c9", cyp2c9Routes);
 app.use("/api/hlab", hlabRoutes);
 app.use("/api/cyp2d6", cyp2d6Routes);
+
+//auth
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`✅ Backend running at http://localhost:${PORT}`);
